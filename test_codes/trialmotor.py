@@ -20,16 +20,20 @@ def Motor_Speed(pca,percent):
 #initialization
 pca = Servo_Motor_Initialization()
 
-while (1==1):
+for i in range(2):
     Motor_Speed(pca, 0)   #stop/neutral position
-    time.sleep(2)
+    time.sleep(3)
+    print("R")
     Motor_Speed(pca, -0.15)   #reverse
     time.sleep(3)
-    Motor_Speed(pca, 0)
-    time.sleep(2)
-    Motor_Speed(pca, -0.15)   #forward
+    Motor_Speed(pca, 0)   #stop/neutral position
     time.sleep(3)
-    Motor_Speed(pca, 0)    
-    time.sleep(2)
-    Motor_Speed(pca, 0)    
-    time.sleep(2)
+    print("F")
+    Motor_Speed(pca, 0.15)   #forward
+    time.sleep(3)
+    Motor_Speed(pca, 0)   #stop/neutral position
+    time.sleep(3)
+    Motor_Speed(pca, -0.15)   #reverse
+    time.sleep(3)
+    Motor_Speed(pca, 0)   #stop/neutral position
+    time.sleep(3)
