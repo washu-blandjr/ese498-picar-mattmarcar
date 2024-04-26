@@ -66,7 +66,7 @@
     # run("/home/mattmarcar/Documents/ESE498/test_codes/lidar-out.txt")
 #-----------------------------------------------------------------------
 # #!/usr/bin/env python3
-# '''Records scans to a given file
+# '''Records scans to command line
 # Usage example:
 
 # $ python3 triallidar.txt scans.py out.txt'''
@@ -74,54 +74,38 @@ import sys
 import numpy as np
 from adafruit_rplidar import RPLidar
 
-
-PORT_NAME = '/dev/ttyUSB0'
-
-def run(path):
-    '''Main function'''
-    lidar = RPLidar(None, PORT_NAME, timeout=3)
-    data = []
-    outfile = open(path, 'w')
-    try:
-        print('Recording measurments... Press Crl+C to stop.')
-        for scan in lidar.iter_scans():
-            data.append(np.array(scan))
-            outfile.write(str(data) + '\n')
-    except KeyboardInterrupt:
-        print('Stoping.')
-    lidar.stop()
-    lidar.disconnect()
-    outfile.close()
-    
-if __name__ == '__main__':
-    run(sys.argv[1])
-#-----------------------------------------------------------------------
-# #!/usr/bin/env python3
-# '''Records scans to a given file
-# Usage example:
-
-import sys
-import numpy as np
-from adafruit_rplidar import RPLidar
+# LIDAR sections (from Car's POV):
+# 315 -  45: Back
+# 45  - 135: Left
+# 135 - 225: Front
+# 225 - 315: Right
 
 
 PORT_NAME = '/dev/ttyUSB0'
 
-def run(path):
+def run():
     '''Main function'''
     lidar = RPLidar(None, PORT_NAME, timeout=3)
-    data = []
-    # outfile = open(path, 'w')
+
     try:
         print('Recording measurments... Press Crl+C to stop.')
         for scan in lidar.iter_scans():
-            data.append(np.array(scan))
-            # outfile.write(str(data) + '\n')
+            for (_, angle, dist) in scan:
+                
+                if dist <= 400 and (angle in range(315, 360) or angle in range(0,45)):
+                
+                    print("Too Close!") 
+                    
+                    # Print Out Data
+                    f_dist = f"{dist:.2f}"
+                    f_angle = f"{angle:.2f}"
+                    print(f"D: {f_dist} mm, A: {f_angle} deg")
+            
+            
     except KeyboardInterrupt:
         print('Stoping.')
     lidar.stop()
     lidar.disconnect()
-    outfile.close()
     
 if __name__ == '__main__':
-    run(sys.argv[1])
+    run()
