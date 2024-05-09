@@ -1,0 +1,12 @@
+<launch>
+    
+   <node pkg="capstone_main_pkg" type="talk_cam.py" name="talker1">
+   </node>
+
+
+   <node pkg="capstone_main_pkg" type="listenall.py" name="listen" output="screen">
+   </node>
+
+   
+</launch>
+
